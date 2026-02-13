@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  user-service-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Backend/user_service
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: Backend/user_service/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Type check
+        run: npm run build
